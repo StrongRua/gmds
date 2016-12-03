@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <!--redis-->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxActive" value="${redis.maxActive}"/>
+        <property name="minIdle" value="${redis.minIdle}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="testOnReturn" value="${redis.testOnReturn}"/>
+        <property name="testWhileIdle" value="${redis.testWhileIdle}"/>
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" value="${redis.pass}"/>
+        <property name="poolConfig" ref="poolConfig"/>
+    </bean>
+    
+        <bean id="userTokenDao" class="com.dftc.redis.dao.impl.UserTokenDaoImpl">
+        <property name="redisTemplate" ref="redisTemplate"/>
+    </bean>
+    
+</beans>
